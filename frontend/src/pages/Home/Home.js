@@ -369,6 +369,12 @@ const Home = () => {
       name: 'Vóley',
       description: 'Canchas de vóley',
       color: '#9C27B0'
+    },
+    {
+      icon: <GiTennisCourt />,
+      name: 'Pádel',
+      description: 'Canchas de pádel',
+      color: '#00BCD4'
     }
   ];
 

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FiMenu, FiSearch, FiBell, FiUser, FiLogOut, FiSun, FiMoon, FiSettings } from 'react-icons/fi';
-import { GiSoccerBall, GiWhistle, GiTennisRacket, GiBasketballBall, GiVolleyballBall } from 'react-icons/gi';
+import { GiSoccerBall, GiWhistle, GiTennisRacket, GiBasketballBall, GiVolleyballBall, GiTennisCourt } from 'react-icons/gi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -393,13 +393,14 @@ const Header = ({ onToggleSidebar, onToggleMobileNav, showSidebarToggle }) => {
             <FiMenu />
           </MenuButton>
 
-          <Logo to="/" theme={theme}>
+          <Logo to="/home" theme={theme}>
             <BallIcon />
             <span>TuTurnoYa</span>
             <SportIcons theme={theme}>
               <GiTennisRacket />
               <GiBasketballBall />
               <GiVolleyballBall />
+              <GiTennisCourt title="Pádel" />
             </SportIcons>
           </Logo>
         </LeftSection>

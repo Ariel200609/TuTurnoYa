@@ -26,7 +26,7 @@ const ProtectedRoute = ({ children, userType, allowedUserTypes = [] }) => {
       case 'venue_owner':
         return <Navigate to="/venue-owner/dashboard" replace />;
       case 'user':
-        return <Navigate to="/profile" replace />;
+        return <Navigate to="/home" replace />;
       default:
         return <Navigate to="/" replace />;
     }

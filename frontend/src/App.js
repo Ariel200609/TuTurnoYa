@@ -65,14 +65,15 @@ const AppContent = () => {
             <DemoWrapper>
               <div className="App">
                 <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<Layout><Home /></Layout>} />
-                <Route path="/search" element={<Layout><Search /></Layout>} />
-                <Route path="/venue/:id" element={<Layout><VenueDetails /></Layout>} />
-                
-                {/* Auth Routes */}
+                {/* Auth Routes - Login es la página principal */}
+                <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                
+                {/* Public Routes - Después del login */}
+                <Route path="/home" element={<Layout><Home /></Layout>} />
+                <Route path="/search" element={<Layout><Search /></Layout>} />
+                <Route path="/venue/:id" element={<Layout><VenueDetails /></Layout>} />
                 
                 {/* User Protected Routes */}
                 <Route path="/profile" element={

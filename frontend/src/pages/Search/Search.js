@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import { useTheme } from '../../contexts/ThemeContext';
 import apiService from '../../services/apiService';
 import LoadingSpinner from '../../components/Common/LoadingSpinner';
+import PatronatoCard from '../../components/Venues/PatronatoCard';
+import { demoVenues } from '../../data/demoData';
 
 const SearchWrapper = styled.div`
   min-height: 60vh;

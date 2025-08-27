@@ -121,6 +121,78 @@ export const demoVenues = [
         isActive: true
       }
     ]
+  },
+  {
+    id: '4',
+    name: 'Club Atlético Patronato',
+    address: 'Av. San Martín 2100, Bahía Blanca',
+    neighborhood: 'Patronato',
+    city: 'Bahía Blanca',
+    phoneNumber: '+5402914567893',
+    description: 'Club histórico de Bahía Blanca con instalaciones de primer nivel. Tradición y calidad en deportes.',
+    amenities: ['Estacionamiento', 'Vestuarios', 'Buffet', 'Iluminación', 'Quincho', 'Sede Social', 'Wi-Fi'],
+    averageRating: 4.8,
+    totalReviews: 68,
+    isActive: true,
+    isVerified: true,
+    clubColors: ['#000000', '#DC143C'], // Negro y rojo
+    coordinates: { lat: -38.7150, lng: -62.2400 },
+    images: [
+      'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'
+    ],
+    courts: [
+      {
+        id: '7',
+        name: 'Cancha de Fútbol Principal',
+        courtType: 'Fútbol 11',
+        surfaceType: 'Césped Natural',
+        basePrice: 8000,
+        maxPlayers: 22,
+        hasLighting: true,
+        isActive: true
+      },
+      {
+        id: '8',
+        name: 'Cancha de Fútbol 5',
+        courtType: 'Fútbol 5',
+        surfaceType: 'Césped Sintético',
+        basePrice: 3800,
+        maxPlayers: 10,
+        hasLighting: true,
+        isActive: true
+      },
+      {
+        id: '9',
+        name: 'Cancha de Vóley',
+        courtType: 'Vóley',
+        surfaceType: 'Parquet',
+        basePrice: 2800,
+        maxPlayers: 12,
+        hasLighting: true,
+        isActive: true
+      },
+      {
+        id: '10',
+        name: 'Cancha de Pádel 1',
+        courtType: 'Pádel',
+        surfaceType: 'Césped Sintético',
+        basePrice: 3200,
+        maxPlayers: 4,
+        hasLighting: true,
+        isActive: true
+      },
+      {
+        id: '11',
+        name: 'Cancha de Pádel 2',
+        courtType: 'Pádel',
+        surfaceType: 'Césped Sintético',
+        basePrice: 3200,
+        maxPlayers: 4,
+        hasLighting: true,
+        isActive: true
+      }
+    ]
   }
 ];
 
@@ -134,7 +206,7 @@ export const demoUsers = {
     isPhoneVerified: true,
     isActive: true
   },
-  owner: {
+  venue_owner: {
     id: '1',
     firstName: 'María',
     lastName: 'González',

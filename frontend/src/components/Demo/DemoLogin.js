@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { FiUser, FiSettings, FiShield, FiLogIn } from 'react-icons/fi';
 import { GiSoccerBall } from 'react-icons/gi';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { toast } from 'react-toastify';
 import apiService from '../../services/apiService';
+import { demoUsers } from '../../data/demoData';
 
 const DemoWrapper = styled.div`
   min-height: 100vh;
@@ -127,7 +129,9 @@ const InfoBox = styled.div`
 const DemoLogin = () => {
   const [selectedType, setSelectedType] = useState('user');
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
   const { theme } = useTheme();
+  const navigate = useNavigate();
 
   const userTypes = [
     {
@@ -158,20 +162,48 @@ const DemoLogin = () => {
     try {
       const selectedUser = userTypes.find(u => u.type === selectedType);
       
-      const response = await apiService.utils.demoLogin(selectedUser.email, selectedType);
+      // Obtener usuario demo según el tipo
+      const user = demoUsers[selectedType];
+      if (!user) {
+        throw new Error('Usuario demo no encontrado');
+      }
+      
+      // Agregar userType al objeto user
+      const userWithType = {
+        ...user,
+        userType: selectedType
+      };
       
       // Simular login exitoso
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('userType', response.userType);
+      localStorage.setItem('token', 'demo-token');
+      localStorage.setItem('userType', selectedType);
+      localStorage.setItem('user', JSON.stringify(userWithType));
       
-      toast.success(`¡Bienvenido como ${selectedUser.title}!`);
+      // Actualizar contexto de auth
+      login(userWithType);
       
-      // Recargar página para que se active el contexto de auth
-      window.location.href = '/';
+      toast.success(`¡Bienvenido ${user.firstName}!`);
+      
+      // Dar tiempo al contexto para actualizarse antes de navegar
+      setTimeout(() => {
+        // Navegar según el tipo de usuario  
+        switch (selectedType) {
+          case 'admin':
+            navigate('/admin/dashboard');
+            break;
+          case 'venue_owner':
+            navigate('/venue-owner/dashboard');
+            break;
+          case 'user':
+          default:
+            navigate('/home');
+            break;
+        }
+      }, 100);
       
     } catch (error) {
       console.error('Demo login error:', error);
-      toast.error('Error en login demo');
+      toast.error('Error en login demo: ' + error.message);
     } finally {
       setLoading(false);
     }

@@ -270,6 +270,21 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: AuthActionTypes.CLEAR_ERROR });
   };
 
+  // Generic login for demo mode
+  const login = (userData) => {
+    const userType = userData.userType || 'user';
+    const token = 'demo-token';
+    
+    dispatch({
+      type: AuthActionTypes.LOGIN_SUCCESS,
+      payload: {
+        user: userData,
+        userType: userType,
+        token: token
+      }
+    });
+  };
+
   const value = {
     // State
     user: state.user,
@@ -285,6 +300,7 @@ export const AuthProvider = ({ children }) => {
     venueOwnerLogin,
     venueOwnerRegister,
     adminLogin,
+    login,
     logout,
     updateUser,
     clearError,
