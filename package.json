@@ -1,0 +1,27 @@
+{
+  "name": "tuturno-ya-platform",
+  "version": "1.0.0",
+  "description": "Plataforma de reservas de canchas de fútbol estilo marketplace",
+  "main": "server.js",
+  "scripts": {
+    "quick-start": "node quick-start.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start",
+    "install-deps": "npm install && cd backend && npm install && cd ../frontend && npm install --legacy-peer-deps",
+    "clean-install": "node clean-install.js",
+    "fix-install": "node fix-install.js",
+    "fix-frontend": "node fix-frontend-quick.js",
+    "test-frontend": "node test-frontend.js",
+    "fix-ajv": "node fix-ajv-error.js",
+    "demo": "npm run quick-start && npm run dev",
+    "deploy-github": "node deploy-github-pages.js",
+    "build-frontend": "cd frontend && npm run build"
+  },
+  "keywords": ["futbol", "reservas", "canchas", "marketplace"],
+  "author": "TuTurnoYa Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
