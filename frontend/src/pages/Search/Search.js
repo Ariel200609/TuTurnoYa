@@ -132,11 +132,29 @@ const Search = () => {
         neighborhood: searchParams.get('neighborhood')
       };
 
-      const response = await apiService.venues.getAll(filters);
-      setVenues(response.venues || []);
+      // En modo demo, usar datos estáticos
+      if (!apiService.venues || !apiService.venues.getAll) {
+        // Filtrar venues demo
+        let filteredVenues = [...demoVenues];
+        
+        if (filters.search) {
+          const searchTerm = filters.search.toLowerCase();
+          filteredVenues = filteredVenues.filter(venue =>
+            venue.name.toLowerCase().includes(searchTerm) ||
+            venue.neighborhood.toLowerCase().includes(searchTerm) ||
+            venue.description.toLowerCase().includes(searchTerm)
+          );
+        }
+        
+        setVenues(filteredVenues);
+      } else {
+        const response = await apiService.venues.getAll(filters);
+        setVenues(response.venues || []);
+      }
     } catch (error) {
       console.error('Error loading venues:', error);
-      setVenues([]);
+      // Fallback a datos demo
+      setVenues(demoVenues);
     } finally {
       setLoading(false);
     }
@@ -170,16 +188,29 @@ const Search = () => {
               {venues.length} cancha{venues.length !== 1 ? 's' : ''} encontrada{venues.length !== 1 ? 's' : ''}
             </h2>
             <ResultsGrid theme={theme}>
-              {venues.map((venue, index) => (
-                <VenueCard
-                  key={venue.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  as={Link}
-                  to={`/venue/${venue.id}`}
-                  theme={theme}
-                >
+              {venues.map((venue, index) => {
+                // Usar tarjeta especial para Patronato
+                if (venue.name === 'Club Atlético Patronato') {
+                  return (
+                    <PatronatoCard
+                      key={venue.id}
+                      venue={venue}
+                      onClick={() => window.location.href = `/venue/${venue.id}`}
+                    />
+                  );
+                }
+                
+                // Tarjeta normal para otros venues
+                return (
+                  <VenueCard
+                    key={venue.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    as={Link}
+                    to={`/venue/${venue.id}`}
+                    theme={theme}
+                  >
                   <VenueImage theme={theme}>
                     {venue.mainImage ? (
                       <img 
@@ -209,7 +240,8 @@ const Search = () => {
                     </VenueInfo>
                   </VenueContent>
                 </VenueCard>
-              ))}
+                );
+              })}
             </ResultsGrid>
           </>
         ) : (

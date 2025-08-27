@@ -8,6 +8,8 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 import apiService from '../../services/apiService';
 import LoadingSpinner from '../../components/Common/LoadingSpinner';
+import PatronatoCard from '../../components/Venues/PatronatoCard';
+import { demoVenues } from '../../data/demoData';
 
 const HomeWrapper = styled.div`
   min-height: 100vh;
@@ -307,14 +309,24 @@ const Home = () => {
 
   const loadPopularVenues = async () => {
     try {
-      const response = await apiService.venues.getAll({
-        limit: 3,
-        sortBy: 'rating',
-        sortOrder: 'desc'
-      });
-      setPopularVenues(response.venues || []);
+      // En modo demo, usar datos estáticos
+      if (!apiService.venues || !apiService.venues.getAll) {
+        // Usar datos demo y destacar Patronato
+        const sortedVenues = [...demoVenues].sort((a, b) => b.averageRating - a.averageRating);
+        setPopularVenues(sortedVenues.slice(0, 3));
+      } else {
+        const response = await apiService.venues.getAll({
+          limit: 3,
+          sortBy: 'rating',
+          sortOrder: 'desc'
+        });
+        setPopularVenues(response.venues || []);
+      }
     } catch (error) {
       console.error('Error loading popular venues:', error);
+      // Fallback a datos demo
+      const sortedVenues = [...demoVenues].sort((a, b) => b.averageRating - a.averageRating);
+      setPopularVenues(sortedVenues.slice(0, 3));
     } finally {
       setLoading(false);
     }
@@ -441,6 +453,22 @@ const Home = () => {
         </HeroContainer>
       </HeroSection>
 
+      {/* Patronato Destacado Section */}
+      <FeaturesSection theme={theme} style={{ background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #DC143C 100%)' }}>
+        <FeaturesContainer theme={theme}>
+          <SectionTitle theme={theme} style={{ color: 'white', textAlign: 'center', marginBottom: '2rem' }}>
+            🏆 Club Destacado
+          </SectionTitle>
+          
+          <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '600px', margin: '0 auto' }}>
+            <PatronatoCard
+              venue={demoVenues.find(v => v.name === 'Club Atlético Patronato')}
+              onClick={() => navigate('/venue/4')}
+            />
+          </div>
+        </FeaturesContainer>
+      </FeaturesSection>
+
       {/* Features Section */}
       <FeaturesSection theme={theme}>
         <FeaturesContainer theme={theme}>
@@ -486,16 +514,29 @@ const Home = () => {
           ) : (
             <VenuesGrid theme={theme}>
               {popularVenues.length > 0 ? (
-                popularVenues.map((venue, index) => (
-                  <VenueCard
-                    key={venue.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    as={Link}
-                    to={`/venue/${venue.id}`}
-                    theme={theme}
-                  >
+                popularVenues.map((venue, index) => {
+                  // Usar tarjeta especial para Patronato
+                  if (venue.name === 'Club Atlético Patronato') {
+                    return (
+                      <PatronatoCard
+                        key={venue.id}
+                        venue={venue}
+                        onClick={() => navigate(`/venue/${venue.id}`)}
+                      />
+                    );
+                  }
+                  
+                  // Tarjeta normal para otros venues
+                  return (
+                    <VenueCard
+                      key={venue.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      as={Link}
+                      to={`/venue/${venue.id}`}
+                      theme={theme}
+                    >
                     <VenueImage theme={theme}>
                       {venue.mainImage ? (
                         <img 
@@ -528,7 +569,8 @@ const Home = () => {
                       </VenuePrice>
                     </VenueContent>
                   </VenueCard>
-                ))
+                  );
+                })
               ) : (
                 <div style={{ gridColumn: '1 / -1', textAlign: 'center', color: theme.colors.textSecondary }}>
                   No hay venues disponibles en este momento
